@@ -7,7 +7,7 @@ export enum UserRoleEnumType {
 }
 
 export enum UserSubscriptionEnumType {
-  HOBBY = 'free',
+  HOBBY = 'hobby',
   PREMIUM = 'premium',
   BUSINESSES = 'businesses',
 }
@@ -39,7 +39,12 @@ export class User {
   })
   subscription: UserSubscriptionEnumType.HOBBY
 
-  @Column({ type: 'timestamptz' })
+  @Column({
+    nullable: true,
+  })
+  refresh_token: string
+
+  @Column({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
   created_at: Date
 
   @BeforeInsert()

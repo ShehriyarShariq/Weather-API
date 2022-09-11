@@ -4,11 +4,11 @@ const AuthRouter = express.Router()
 import {
   handleLogin,
   handleRegister,
-  handleLogout,
+  handleTokenRefresh,
 } from './../controllers/auth_controller'
 
 AuthRouter.post('/login', handleLogin)
 AuthRouter.post('/register', handleRegister)
-AuthRouter.post('/register', handleLogout)
+AuthRouter.post('/refresh', handleTokenRefresh)
 
 export default AuthRouter
