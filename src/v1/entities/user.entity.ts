@@ -12,10 +12,10 @@ export enum UserSubscriptionEnumType {
   BUSINESSES = 'businesses',
 }
 
-@Entity()
+@Entity({ name: 'user' })
 export class User {
   @PrimaryGeneratedColumn('uuid')
-  id: number
+  id: string
 
   @Column({
     unique: true,
@@ -52,5 +52,14 @@ export class User {
     hashedPassword: string,
   ) {
     return await bcrypt.compare(candidatePassword, hashedPassword)
+  }
+
+  toJSON() {
+    return {
+      id: this.id,
+      email: this.email,
+      subscription: this.subscription,
+      created_at: this.created_at,
+    }
   }
 }
