@@ -1,16 +1,7 @@
 version: '3'
 services:
-  server:
-    build: .
-    ports:
-      - 3000:3000
-    volumes:
-      - ./:/usr/src/app
-    depends_on:
-      - postgres
-      - redis
   postgres:
-    image: postgres:latest
+    image: postgis/postgis:latest
     container_name: postgres
     ports:
       - '5432:5432'
@@ -25,8 +16,18 @@ services:
       - '6379:6379'
     volumes:
       - redisDB:/data
+  server:
+    build: .
+    ports:
+      - 3000:3000
+    volumes:
+      - ./:/usr/src/app
+    depends_on:
+      - postgres
+      - redis
 volumes:
-  progresDB:
+  server:
+  pgdata:
   redisDB:
 
 
