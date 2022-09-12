@@ -1,5 +1,6 @@
 export default {
   port: 'PORT',
+  iqAirAPIKey: 'IQ_AIR_API_KEY',
   postgresConfig: {
     host: 'POSTGRES_HOST',
     port: 'POSTGRES_PORT',

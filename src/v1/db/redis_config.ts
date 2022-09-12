@@ -4,7 +4,7 @@ import config from 'config'
 
 const port = config.get<number>('redisPort')
 
-const redisUrl = `redis://localhost:${port}`
+const redisUrl = `redis://redis:${port}`
 
 const redisClient = createClient({
   url: redisUrl,

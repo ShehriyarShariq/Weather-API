@@ -1,7 +1,7 @@
 require('dotenv').config()
 import config from 'config'
-import express, { Request, Response } from 'express'
-import * as bcrypt from 'bcrypt'
+import { Request, Response } from 'express'
+import * as bcrypt from 'bcryptjs'
 import * as jwt from 'jsonwebtoken'
 import redisClient from './../db/redis_config'
 import { AppDataSource } from '../db/db_config'
@@ -14,12 +14,39 @@ const usersRepository = AppDataSource.getRepository(User)
 export const handleLogin = async (req: Request, res: Response) => {
   const { email, password } = req.body
   if (!email || !password)
-    return res.status(400).json({ message: 'Email and password are required.' })
+    return res
+      .status(400)
+      .json({ status: 'failure', message: 'Email and password are required.' })
 
-  const foundUser: User | null = await usersRepository.findOneBy({
-    email: email,
-  })
-  if (!foundUser) return res.sendStatus(401) //Unauthorized
+  let foundUser: User
+  try {
+    const user = await usersRepository.findOneBy({
+      email: email,
+    })
+
+    if (user == null) {
+      return res.sendStatus(401) //Unauthorized
+    }
+
+    foundUser = user
+  } catch (error) {
+    return res.sendStatus(401) //Unauthorized
+  }
+
+  await usersRepository
+    .findOneBy({
+      email: email,
+    })
+    .then((value) => {
+      if (value == null) {
+        return res.sendStatus(401) //Unauthorized
+      }
+
+      foundUser = value
+    })
+    .catch(() => {
+      return res.sendStatus(401) //Unauthorized
+    })
 
   // evaluate password
   const match: boolean = await bcrypt.compare(password, foundUser.password)
@@ -46,10 +73,13 @@ export const handleLogin = async (req: Request, res: Response) => {
     )
 
     res.status(200).json({
-      accessToken,
-      refreshToken,
-      accessTokenExpiry: '1200s',
-      refreshTokenExpiry: '7d',
+      status: 'success',
+      data: {
+        accessToken,
+        refreshToken,
+        accessTokenExpiry: '1200s',
+        refreshTokenExpiry: '7d',
+      },
     })
   } else {
     res.sendStatus(401)
@@ -59,23 +89,28 @@ export const handleLogin = async (req: Request, res: Response) => {
 export const handleRegister = async (req: Request, res: Response) => {
   const { email, password } = req.body
   if (!email || !password)
-    return res
-      .status(400)
-      .json({ message: 'Username and password are required.' })
-
-  // check for duplicate usernames in the db
-  const duplicate: User | null = await usersRepository.findOneBy({
-    email: email,
-  })
-  if (duplicate) return res.sendStatus(409) //Conflict
+    return res.status(400).json({
+      status: 'failure',
+      message: 'Username and password are required.',
+    })
 
   try {
-    //encrypt the password
-    const hashedPwd: string = await bcrypt.hash(password, 10)
+    const user = await usersRepository.findOneBy({
+      email: email,
+    })
+
+    console.log(user)
+
+    if (user != null) {
+      return res.sendStatus(409) //Conflict
+    }
+  } catch (error) {}
+
+  try {
     //store the new user
     const newUser = usersRepository.create({
       email: email,
-      password: hashedPwd,
+      password: password,
     })
 
     const user: User = await usersRepository.save(newUser)
@@ -87,23 +122,28 @@ export const handleRegister = async (req: Request, res: Response) => {
       time_remaining_until_month_end_in_seconds(),
     )
 
-    res.status(201).json({ success: `New user ${email} created!` })
+    res
+      .status(201)
+      .json({ status: 'success', message: `New user ${email} created!` })
   } catch (err) {
-    res.status(500).json({ message: (err as any).message })
+    res.status(500).json({ status: 'failure', message: (err as any).message })
   }
 }
 
 export const handleTokenRefresh = async (req: Request, res: Response) => {
   const { id, refresh_token } = req.body
   if (!id || !refresh_token)
-    return res
-      .status(400)
-      .json({ message: 'User ID and Refresh token are required.' })
+    return res.status(400).json({
+      status: 'failure',
+      message: 'User ID and Refresh token are required.',
+    })
 
   const isValid = verifyRefresh(id, refresh_token)
 
   if (!isValid)
-    return res.status(401).json({ message: 'Invalid refresh token.' })
+    return res
+      .status(401)
+      .json({ status: 'failure', message: 'Invalid refresh token.' })
 
   const accessToken = jwt.sign(
     { id },
@@ -111,5 +151,5 @@ export const handleTokenRefresh = async (req: Request, res: Response) => {
     { expiresIn: '1200s' },
   )
 
-  res.status(200).json({ accessToken })
+  res.status(200).json({ status: 'success', data: { accessToken } })
 }

@@ -37,7 +37,7 @@ export class LocationAirQuality {
 
   toJSON() {
     return {
-      ts: this.ts.toUTCString(),
+      ts: this.ts,
       aqius: this.aqius,
       mainus: this.mainus,
       aqicn: this.aqicn,

@@ -1,5 +1,6 @@
+// Interface for decoded JWT
 interface DataStoredInToken {
-  _id: string
+  id: string
 }
 
 export default DataStoredInToken
