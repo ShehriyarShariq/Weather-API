@@ -100,7 +100,7 @@ export const handleFetchMostPollutedTime = async (
   if (mostPollutedLocations.length > 0) {
     return res.status(200).json({
       status: 'success',
-      data: mostPollutedLocations[0].toJSON(),
+      data: mostPollutedLocations[0].ts,
     })
   } else {
     return res.status(404).json({

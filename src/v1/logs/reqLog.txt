@@ -53,3 +53,28 @@
 20220912	04:57:34	891b54e7-bbef-4dda-b010-097809f8943b	GET	undefined	/v1/air_quality?lat=24.925909&lng=67.058856
 20220912	04:57:38	60946f1b-5759-4641-8f0b-5123354e5e5c	GET	undefined	/v1/air_quality?lat=24.925909&lng=67.058856
 20220912	04:57:44	60f5131c-66cb-444c-a0b3-c6ae9f91b080	GET	undefined	/v1/air_quality?lat=24.925909&lng=67.058856
+20220912	06:37:41	9aafb288-731b-45a5-9307-584c64b89eb1	POST	null	undefined	/v1/auth/login
+20220912	06:47:31	6250e6e1-76ed-4e1f-9b45-759a9304f128	POST	null	undefined	/v1/auth/login
+20220912	07:56:01	580b0017-6725-4a54-878c-25cb6ab369a6	GET	null	undefined	/
+20220912	07:56:01	ca0da007-c345-40b1-982b-a18d06fc6ab2	GET	null	undefined	/favicon.ico
+20220912	07:56:02	802ff077-75cb-4cc0-a508-9c876056016b	GET	null	undefined	/favicon.ico
+20220912	07:56:05	b862f690-d899-41d6-a6c4-a3cd0f5c7c15	POST	null	undefined	/v1/admin/login
+20220912	07:56:33	bc271f34-60a7-411c-b4b9-d7d1ee642c72	POST	null	undefined	/v1/admin/login
+20220912	07:57:39	cc30c383-29ef-412e-8565-5b2d8eb5e8d6	POST	null	undefined	/v1/admin/login
+20220912	07:57:51	cfa9f73f-0ded-42f3-b71d-0921f1c9947f	GET	null	undefined	/v1/admin/login
+20220912	07:57:51	7b6d753a-e0b6-43ee-804f-5b6622206b5d	GET	null	undefined	/favicon.ico
+20220912	07:57:52	bce317c9-d715-4022-b08c-91ec918ba3ac	GET	null	undefined	/favicon.ico
+20220912	07:59:01	c4bb50b5-97d9-4f39-b744-dc0b96848431	POST	null	undefined	/v1/admin/login
+20220912	07:59:17	f4be926b-ea98-416e-ad7d-d3a4434b5bfa	POST	null	undefined	/v1/admin/login
+20220912	08:00:06	738a317d-8cb7-499d-bfc4-832c905addfb	POST	null	undefined	/v1/admin/login
+20220912	08:01:14	21f2cbb9-e148-4d15-aaed-358c8163ef0e	POST	null	undefined	/v1/admin/login
+20220912	08:01:26	3ec0ef59-0308-44a2-bb19-67f10c21ba78	POST	null	undefined	/v1/admin/login
+20220912	08:01:44	1748f739-3e0f-43f0-8a5c-a72f562ff60d	POST	null	undefined	/v1/admin/login
+20220912	08:02:27	1a3582a5-d8b1-4626-929f-945ebca42b25	POST	null	undefined	/v1/admin/login
+20220912	08:02:49	1c593a25-d1e2-45b1-9034-ae17a7ca352c	POST	null	undefined	/v1/admin/login
+20220912	08:03:00	41230835-27e6-46ff-abc6-cd3af5549a90	POST	null	undefined	/v1/admin/login
+20220912	08:08:58	c0001b60-d9cf-4fc2-8690-1c605cf1c1d9	POST	null	undefined	/v1/admin/login
+20220912	08:09:00	2d2662c6-7193-452b-9e5c-08e4c7021688	GET	null	undefined	/v1/air_quality?lat=48.856613&lng=2.352222
+20220912	08:09:15	437acb02-515a-4480-bdef-5021bd38507d	POST	null	undefined	/v1/admin/login
+20220912	08:10:00	c12b05a8-b37c-4690-b9b4-3c592d97d76a	GET	null	undefined	/v1/air_quality?lat=48.856613&lng=2.352222
+20220912	08:11:00	956bd941-7122-4ed6-918d-dd98c687122a	GET	null	undefined	/v1/air_quality?lat=48.856613&lng=2.352222

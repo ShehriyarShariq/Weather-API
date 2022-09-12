@@ -11,4 +11,6 @@ export default {
   jwtAccessTokenSecret: 'JWT_ACCESS_TOKEN_SECRET',
   jwtRefreshTokenSecret: 'JWT_REFRESH_TOKEN_SECRET',
   redisPort: 'REDIS_PORT',
+  adminUser: 'ADMIN_USER',
+  adminPassword: 'ADMIN_PASSWORD',
 }

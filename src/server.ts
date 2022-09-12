@@ -6,6 +6,8 @@ import cors from 'cors'
 import { AppDataSource } from './v1/db/db_config'
 import AuthRouter from './v1/routes/auth'
 import AirQualityRouter from './v1/routes/air_quality'
+import AdminRouter from './v1/routes/admin'
+import { createAdminIfDoesNotExist } from './v1/controllers/admin.controller'
 
 import verifyJWT from './v1/middleware/auth.middleware'
 import { logger } from './v1/middleware/logs.middleware'
@@ -14,6 +16,11 @@ import { logger } from './v1/middleware/logs.middleware'
 AppDataSource.initialize()
   .then(async () => {
     validateEnv()
+
+    await createAdminIfDoesNotExist(
+      config.get<string>('adminUser'),
+      config.get<string>('adminPassword'),
+    )
 
     const app = express()
 
@@ -31,6 +38,7 @@ AppDataSource.initialize()
 
     // Authentication Endpoints
     app.use('/v1/auth', AuthRouter)
+    app.use('/v1/admin', AdminRouter)
 
     // Middle for checking presence of Authorization JWT Token in Header
     app.use(verifyJWT)

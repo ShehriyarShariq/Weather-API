@@ -33,21 +33,6 @@ export const handleLogin = async (req: Request, res: Response) => {
     return res.sendStatus(401) //Unauthorized
   }
 
-  await usersRepository
-    .findOneBy({
-      email: email,
-    })
-    .then((value) => {
-      if (value == null) {
-        return res.sendStatus(401) //Unauthorized
-      }
-
-      foundUser = value
-    })
-    .catch(() => {
-      return res.sendStatus(401) //Unauthorized
-    })
-
   // evaluate password
   const match: boolean = await bcrypt.compare(password, foundUser.password)
   if (match) {

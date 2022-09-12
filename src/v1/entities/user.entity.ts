@@ -30,14 +30,14 @@ export class User {
     enum: UserRoleEnumType,
     default: UserRoleEnumType.USER,
   })
-  role: UserRoleEnumType.USER
+  role: UserRoleEnumType
 
   @Column({
     type: 'enum',
     enum: UserSubscriptionEnumType,
     default: UserSubscriptionEnumType.HOBBY,
   })
-  subscription: UserSubscriptionEnumType.HOBBY
+  subscription: UserSubscriptionEnumType
 
   @Column({
     nullable: true,
