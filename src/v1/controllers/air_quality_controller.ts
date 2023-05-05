@@ -80,12 +80,29 @@ export const handleFetchMostPollutedTime = async (
   req: Request,
   res: Response,
 ) => {
-  const { city } = req.body
+  const { user } = res.locals
+  const city: string = req.query.city as string
 
   if (!city)
     return res
       .status(400)
       .json({ status: 'failure', message: 'City name is required.' })
+
+  const currentRate: string | null = await redisClient.get(
+    `RATE_LIMIT_USER_${user}`,
+  )
+
+  if (!currentRate) {
+    await redisClient.set(`RATE_LIMIT_USER_${user}`, 1)
+    await redisClient.expire(`RATE_LIMIT_USER_${user}`, 60)
+  } else if (parseInt(currentRate) == Constants.rate_limiting['minute']) {
+    return res.status(429).json({
+      status: 'failure',
+      message: 'API limit reached. Please try again in a minute.',
+    })
+  } else {
+    await redisClient.incr(`RATE_LIMIT_USER_${user}`)
+  }
 
   const mostPollutedLocations: LocationAirQuality[] = await locationAirQualityRepository.query(
     `
@@ -100,7 +117,9 @@ export const handleFetchMostPollutedTime = async (
   if (mostPollutedLocations.length > 0) {
     return res.status(200).json({
       status: 'success',
-      data: mostPollutedLocations[0].ts,
+      data: {
+        timestamp: mostPollutedLocations[0].ts,
+      },
     })
   } else {
     return res.status(404).json({

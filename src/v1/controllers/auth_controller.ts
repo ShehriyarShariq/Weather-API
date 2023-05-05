@@ -25,12 +25,16 @@ export const handleLogin = async (req: Request, res: Response) => {
     })
 
     if (user == null) {
-      return res.sendStatus(401) //Unauthorized
+      return res
+        .status(401)
+        .json({ status: 'failure', message: 'Invalid Email/Password.' }) //Unauthorized
     }
 
     foundUser = user
   } catch (error) {
-    return res.sendStatus(401) //Unauthorized
+    return res
+      .status(401)
+      .json({ status: 'failure', message: 'Invalid Email/Password.' }) //Unauthorized
   }
 
   // evaluate password
@@ -67,7 +71,9 @@ export const handleLogin = async (req: Request, res: Response) => {
       },
     })
   } else {
-    res.sendStatus(401)
+    res
+      .status(401)
+      .json({ status: 'failure', message: 'Invalid Email/Password.' })
   }
 }
 
@@ -76,7 +82,7 @@ export const handleRegister = async (req: Request, res: Response) => {
   if (!email || !password)
     return res.status(400).json({
       status: 'failure',
-      message: 'Username and password are required.',
+      message: 'Email and password are required.',
     })
 
   try {
@@ -87,7 +93,9 @@ export const handleRegister = async (req: Request, res: Response) => {
     console.log(user)
 
     if (user != null) {
-      return res.sendStatus(409) //Conflict
+      return res
+        .status(409)
+        .json({ status: 'failure', message: 'User already exists.' }) //Conflict
     }
   } catch (error) {}
 

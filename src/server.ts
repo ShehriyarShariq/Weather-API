@@ -12,6 +12,9 @@ import { createAdminIfDoesNotExist } from './v1/controllers/admin.controller'
 import verifyJWT from './v1/middleware/auth.middleware'
 import { logger } from './v1/middleware/logs.middleware'
 
+import swaggerUi from 'swagger-ui-express'
+import swaggerDocument from './../swagger.json'
+
 // Perform Database Connection and Initialization
 AppDataSource.initialize()
   .then(async () => {
@@ -39,6 +42,8 @@ AppDataSource.initialize()
     // Authentication Endpoints
     app.use('/v1/auth', AuthRouter)
     app.use('/v1/admin', AdminRouter)
+
+    app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 
     // Middle for checking presence of Authorization JWT Token in Header
     app.use(verifyJWT)

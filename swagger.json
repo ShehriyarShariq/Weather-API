@@ -1,0 +1,621 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "YASSIR Air Quality Monitoring API",
+    "description": "This is an API which returns Air Quality Information for a given location. It is also a part of the YASSIR recruitment assignment.",
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    }
+  },
+  "host": "localhost:3000",
+  "basePath": "/v1/",
+  "tags": [
+    {
+      "name": "Auth",
+      "description": "API Routes for User Authentication"
+    },
+    {
+      "name": "Admin",
+      "description": "API Routes for Admin"
+    },
+    {
+      "name": "Air Quality",
+      "description": "API Routes for Air Quality Monitoring"
+    }
+  ],
+  "schemes": ["http"],
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
+  "paths": {
+    "auth/login": {
+      "post": {
+        "tags": ["Auth"],
+        "description": "Login user by email and password.",
+        "parameters": [
+          {
+            "name": "email",
+            "in": "body",
+            "description": "Email of the user"
+          },
+          {
+            "name": "password",
+            "in": "body",
+            "description": "Password of the user"
+          }
+        ],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "User is logged in",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "default": "success"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "accessToken": {
+                      "type": "string"
+                    },
+                    "refreshToken": {
+                      "type": "string"
+                    },
+                    "accessTokenExpiry": {
+                      "type": "string"
+                    },
+                    "refreshTokenExpiry": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid arguments",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "default": "failure"
+                },
+                "message": {
+                  "type": "string",
+                  "default": "Email and password are required."
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "default": "failure"
+                },
+                "message": {
+                  "type": "string",
+                  "default": "Invalid Email/Password."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "auth/register": {
+      "post": {
+        "tags": ["Auth"],
+        "description": "Register user by email and password.",
+        "parameters": [
+          {
+            "name": "email",
+            "in": "body",
+            "description": "Email of the new user"
+          },
+          {
+            "name": "password",
+            "in": "body",
+            "description": "Password of the new user"
+          }
+        ],
+        "produces": ["application/json"],
+        "responses": {
+          "201": {
+            "description": "User has been successfully created",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "default": "success"
+                },
+                "message": {
+                  "type": "string",
+                  "default": "New user <USER_EMAIL> created!"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid arguments",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "default": "failure"
+                },
+                "message": {
+                  "type": "string",
+                  "default": "Email and password are required."
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "default": "failure"
+                },
+                "message": {
+                  "type": "string",
+                  "default": "User already exists."
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Failure",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "default": "failure"
+                },
+                "message": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "auth/refresh": {
+      "post": {
+        "tags": ["Auth"],
+        "description": "Refresh User Access Token.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "body",
+            "description": "ID of the user"
+          },
+          {
+            "name": "refresh_token",
+            "in": "body",
+            "description": "Refresh token of the user"
+          }
+        ],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "User has been successfully created",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "default": "success"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "accessToken": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid arguments",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "default": "failure"
+                },
+                "message": {
+                  "type": "string",
+                  "default": "User ID and Refresh token are required."
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "default": "failure"
+                },
+                "message": {
+                  "type": "string",
+                  "default": "Invalid refresh token."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "admin/login": {
+      "post": {
+        "tags": ["Admin"],
+        "description": "Login admin by email and password.",
+        "parameters": [
+          {
+            "name": "email",
+            "in": "body",
+            "description": "Email of the user"
+          },
+          {
+            "name": "password",
+            "in": "body",
+            "description": "Password of the user"
+          }
+        ],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "User has been successfully created",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "default": "success"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "accessToken": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid arguments",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "default": "failure"
+                },
+                "message": {
+                  "type": "string",
+                  "default": "Email and password are required."
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "default": "failure"
+                },
+                "message": {
+                  "type": "string",
+                  "default": "Invalid Email/Password."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "air_quality": {
+      "get": {
+        "tags": ["Air Quality"],
+        "summary": "Get air quality data by coordinates.",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Access Token"
+          },
+          {
+            "name": "lat",
+            "in": "path",
+            "description": "Latitude Coordinate of the Location"
+          },
+          {
+            "name": "lng",
+            "in": "path",
+            "description": "Longitude Coordinate of the Location"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Air Quality information of Location",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "default": "success"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "ts": {
+                      "type": "Date"
+                    },
+                    "aqius": {
+                      "type": "number"
+                    },
+                    "mainus": {
+                      "type": "string"
+                    },
+                    "aqicn": {
+                      "type": "number"
+                    },
+                    "maincn": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid arguments",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "default": "failure"
+                },
+                "message": {
+                  "type": "string",
+                  "default": "Latitude and Longitude coordinates are required."
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "default": "failure"
+                },
+                "message": {
+                  "type": "string",
+                  "default": "Location not available."
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate Limit Exceeded",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "default": "failure"
+                },
+                "message": {
+                  "type": "string",
+                  "default": "API limit reached. Please try again in a minute. "
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "air_quality/most_polluted": {
+      "get": {
+        "tags": ["Air Quality"],
+        "summary": "Get timestamp of most polluted record.",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Access Token"
+          },
+          {
+            "name": "city",
+            "in": "path",
+            "description": "Name of the city"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Air Quality information of Location",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "default": "success"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "timestamp": {
+                      "type": "Date"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid arguments",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "default": "failure"
+                },
+                "message": {
+                  "type": "string",
+                  "default": "City name is required."
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "default": "failure"
+                },
+                "message": {
+                  "type": "string",
+                  "default": "No data available for <CITY>"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate Limit Exceeded",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "default": "failure"
+                },
+                "message": {
+                  "type": "string",
+                  "default": "API limit reached. Please try again in a minute. "
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "User": {
+      "required": ["email", "password"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "uniqueItems": true,
+          "description": "Uniquely Auto Generated User IDs (UUIDs)."
+        },
+        "email": {
+          "type": "string",
+          "uniqueItems": true
+        },
+        "password": {
+          "type": "string",
+          "description": "Stored as a hash using the bcrypt hashing library."
+        },
+        "role": {
+          "type": "string",
+          "default": "user",
+          "description": "User Role (USER or ADMIN). Determines the API Access level the user has."
+        },
+        "subscription": {
+          "type": "string",
+          "default": "hobby",
+          "description": "User API Subscription (HOBBY, PREMIUM, or BUSINESS). Determines the API Rate-limitations."
+        },
+        "refresh_token": {
+          "type": "string",
+          "default": "null",
+          "description": "JWT Refresh Token saved for refreshing access token."
+        },
+        "created_at": {
+          "type": "Date",
+          "description": "Account creation date."
+        }
+      }
+    },
+    "LocationAirQuality": {
+      "properties": {
+        "id": {
+          "type": "string",
+          "uniqueItems": true
+        },
+        "city": {
+          "type": "string",
+          "description": "City label of the location."
+        },
+        "country": {
+          "type": "string",
+          "description": "Country label of the location."
+        },
+        "location": {
+          "type": "Point",
+          "description": "A spatial index and a combination of latitude and longitude points."
+        },
+        "ts": {
+          "type": "Date",
+          "description": "Timestamp."
+        },
+        "aqius": {
+          "type": "number"
+        },
+        "mainus": {
+          "type": "string"
+        },
+        "aqicn": {
+          "type": "number"
+        },
+        "maincn": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

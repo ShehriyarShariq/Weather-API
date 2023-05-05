@@ -45,12 +45,16 @@ export const handleLogin = async (req: Request, res: Response) => {
     })
 
     if (user == null) {
-      return res.sendStatus(401) //Unauthorized
+      return res
+        .status(401)
+        .json({ status: 'failure', message: 'Invalid Email/Password.' }) //Unauthorized
     }
 
     foundAdmin = user
   } catch (error) {
-    return res.sendStatus(401) //Unauthorized
+    return res
+      .status(401)
+      .json({ status: 'failure', message: 'Invalid Email/Password.' }) //Unauthorized
   }
 
   // evaluate password
@@ -69,6 +73,8 @@ export const handleLogin = async (req: Request, res: Response) => {
       },
     })
   } else {
-    res.sendStatus(401)
+    res
+      .status(401)
+      .json({ status: 'failure', message: 'Invalid Email/Password.' }) //Unauthorized
   }
 }
